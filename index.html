@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Study Planner</title>
+  <style>
+    :root {
+      --blue: #2563EB;
+      --blue-dark: #1D4ED8;
+      --blue-deep: #1E40AF;
+      --blue-soft: #EFF6FF;
+      --blue-border: #BFDBFE;
+      --bg: #F3F5F9;
+      --surface: #FFFFFF;
+      --surface-2: #F8FAFC;
+      --text: #0F172A;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --high: #EF4444;
+      --high-bg: #FEF2F2;
+      --high-border: #FECACA;
+      --med: #F59E0B;
+      --med-bg: #FFFBEB;
+      --med-border: #FDE68A;
+      --low: #10B981;
+      --low-bg: #ECFDF5;
+      --low-border: #A7F3D0;
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ================= SIGN UP SCREEN ================= */
+    .signup-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 18px;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(37, 99, 235, 0.12), transparent 42%),
+        radial-gradient(circle at 88% 85%, rgba(37, 99, 235, 0.09), transparent 45%),
+        var(--bg);
+    }
+
+    .signup-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .signup-brand {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .signup-brand-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .illustration-box {
+      background: var(--blue-soft);
+      border: 1px solid var(--blue-border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .signup-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .signup-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      background: var(--surface);
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-dark);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.99);
+    }
+
+    .btn-secondary {
+      padding: 9px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-2);
+      border-color: #CBD5E1;
+    }
+
+    .btn-blue-soft {
+      padding: 8px 13px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--blue-border);
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-blue-soft:hover {
+      background: #DBEAFE;
+    }
+
+    .signup-footer-note {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ================= APP SHELL (FULL VIEWPORT) ================= */
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-header {
+      background: var(--blue);
+      color: #FFFFFF;
+      padding: 16px 28px 22px;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.22);
+    }
+
+    .top-header-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      color: #FFFFFF;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .screen-header-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-pill-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+
+    .icon-pill-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .icon-pill-btn:active {
+      transform: scale(0.96);
+    }
+
+    .welcome-banner h1 {
+      font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .welcome-banner p {
+      font-size: 0.9rem;
+      color: #DBEAFE;
+      margin-top: 2px;
+    }
+
+    .desktop-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+    }
+
+    .desktop-nav-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .nav-tab {
+      padding: 12px 14px;
+      border: none;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--text);
+    }
+
+    .nav-tab.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+      font-weight: 700;
+    }
+
+    .main-content {
+      flex: 1;
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 26px 28px 44px;
+    }
+
+    /* ================= CARDS & SECTIONS ================= */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-heading-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .link-action {
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-size: 0.84rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .link-action:hover {
+      text-decoration: underline;
+    }
+
+    /* Quick Actions Grid */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .quick-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .quick-tile:hover {
+      transform: translateY(-2px);
+      border-color: var(--blue-border);
+      box-shadow: 0 14px 28px -8px rgba(37, 99, 235, 0.14);
+    }
+
+    .quick-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      font-size: 1.45rem;
+    }
+
+    .quick-label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .quick-meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    /* Dashboard Lower Grid */
+    .dashboard-lower-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 20px;
+    }
+
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .schedule-time {
+      min-width: 84px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .schedule-info h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .schedule-info p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .badge-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: var(--blue-soft);
+      color: var(--blue);
+      white-space: nowrap;
+    }
+
+    .summary-stats-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mini-stat-box {
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .mini-stat-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .mini-stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ================= TASKS & DEADLINES ================= */
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .filter-pill.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #FFFFFF;
+    }
+
+    .add-task-panel {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .task-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+    }
+
+    .task-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .task-checkbox {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
+    .task-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .task-title.completed {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .task-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .status-tag.done {
+      background: var(--low-bg);
+      color: #047857;
+    }
+
+    .prio-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .prio-High {
+      background: var(--high-bg);
+      color: #B91C1C;
+      border: 1px solid var(--high-border);
+    }
+
+    .prio-Medium {
+      background: var(--med-bg);
+      color: #B45309;
+      border: 1px solid var(--med-border);
+    }
+
+    .prio-Low {
+      background: var(--low-bg);
+      color: #047857;
+      border: 1px solid var(--low-border);
+    }
+
+    .icon-action-btn {
+      padding: 6px 9px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .icon-action-btn:hover {
+      background: #E2E8F0;
+    }
+
+    /* ================= TASK PRIORITY BOARD ================= */
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .priority-col {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .priority-col.high-col {
+      border-top: 5px solid var(--high);
+      background: linear-gradient(to bottom, var(--high-bg), var(--surface) 28%);
+    }
+
+    .priority-col.medium-col {
+      border-top: 5px solid var(--med);
+      background: linear-gradient(to bottom, var(--med-bg), var(--surface) 28%);
+    }
+
+    .priority-col.low-col {
+      border-top: 5px solid var(--low);
+      background: linear-gradient(to bottom, var(--low-bg), var(--surface) 28%);
+    }
+
+    .priority-col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .priority-col-title {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .high-col .priority-col-title { color: #B91C1C; }
+    .medium-col .priority-col-title { color: #B45309; }
+    .low-col .priority-col-title { color: #047857; }
+
+    .priority-item-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 13px;
+      margin-bottom: 10px;
+    }
+
+    .priority-item-card h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .priority-item-card p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .priority-move-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .move-btn {
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 0.72rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .move-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    /* ================= PROGRESS VISUALISATION ================= */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .donut-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 0;
+    }
+
+    .donut-ring {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      margin-bottom: 14px;
+      transition: background 0.35s ease;
+    }
+
+    .donut-hole {
+      width: 124px;
+      height: 124px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    .donut-pct {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .donut-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar-label-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .bar-track {
+      height: 12px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--blue);
+      transition: width 0.35s ease;
+    }
+
+    .daily-hours-chart {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      align-items: end;
+      height: 170px;
+      padding-top: 20px;
+    }
+
+    .day-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .day-bar-wrap {
+      width: 100%;
+      max-width: 38px;
+      height: 110px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 4px 4px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .day-bar {
+      width: 100%;
+      background: var(--blue);
+      border-radius: 6px 6px 0 0;
+      transition: height 0.3s ease;
+    }
+
+    .day-name {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .day-val {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ================= REMINDERS & ALERTS ================= */
+    .reminders-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .reminder-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+    }
+
+    .reminder-info h4 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .reminder-info p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .reminder-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #CBD5E1;
+      transition: 0.25s;
+      border-radius: 999px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #FFFFFF;
+      transition: 0.25s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--blue);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    /* ================= MOCK TESTS ================= */
+    .subject-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .subject-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+    }
+
+    .subject-card:hover {
+      border-color: var(--blue-border);
+      transform: translateY(-1px);
+    }
+
+    .subject-card.selected {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .subject-card h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .subject-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .quiz-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .quiz-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .timer-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .question-text {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .option-item:hover {
+      border-color: var(--blue-border);
+      background: var(--blue-soft);
+    }
+
+    .option-item input {
+      accent-color: var(--blue);
+      width: 17px;
+      height: 17px;
+    }
+
+    .quiz-footer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .score-banner {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: var(--blue-soft);
+      border: 1px solid var(--blue-border);
+      color: var(--text);
+    }
+
+    /* ================= PROFILE & PLANS ================= */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 20px;
+    }
+
+    .student-hero {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .avatar-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #FFFFFF;
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .stat-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat-box {
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-box strong {
+      display: block;
+      font-size: 1.35rem;
+      color: var(--blue);
+    }
+
+    .stat-box span {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .settings-row-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-row-item:last-child {
+      border-bottom: none;
+    }
+
+    .settings-row-item h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .settings-row-item p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: var(--text);
+      color: #FFFFFF;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.25);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 900px) {
+      .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dashboard-lower-grid,
+      .progress-grid,
+      .profile-grid,
+      .priority-grid {
+        grid-template-columns: 1fr;
+      }
+      .add-task-panel {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .top-header,
+      .desktop-nav,
+      .main-content {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .subject-selector-grid,
+      .add-task-panel,
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+      .task-card,
+      .reminder-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. SIGN UP SCREEN (FIRST ENTRY) ==================== -->
+  <section id="signupScreen" class="signup-shell">
+    <div class="signup-card">
+      <div class="signup-brand">
+        <div class="signup-brand-label">SMART STUDY PLANNER</div>
+      </div>
+
+      <div class="illustration-box" aria-hidden="true">
+        <svg width="190" height="106" viewBox="0 0 190 106" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="64" width="112" height="6" rx="3" fill="#2563EB" />
+          <rect x="30" y="70" width="8" height="28" rx="2" fill="#1E40AF" />
+          <rect x="114" y="70" width="8" height="28" rx="2" fill="#1E40AF" />
+          <path d="M138 98V56C138 52 142 49 146 49H162C166 49 169 52 169 56V98" stroke="#2563EB" stroke-width="5" stroke-linecap="round" />
+          <rect x="134" y="72" width="39" height="6" rx="3" fill="#1D4ED8" />
+          <circle cx="76" cy="28" r="11" fill="#1E40AF" />
+          <path d="M58 64C58 49 65 41 76 41C87 41 94 49 94 64" fill="#2563EB" />
+          <rect x="44" y="52" width="24" height="12" rx="2" fill="#FFFFFF" stroke="#2563EB" stroke-width="2" />
+          <line x1="48" y1="56" x2="64" y2="56" stroke="#2563EB" stroke-width="1.8" />
+          <line x1="48" y1="60" x2="60" y2="60" stroke="#2563EB" stroke-width="1.8" />
+          <rect x="145" y="37" width="16" height="12" rx="2" fill="#2563EB" />
+          <circle cx="153" cy="26" r="5" fill="#F59E0B" />
+        </svg>
+      </div>
+
+      <h1 class="signup-title">Create Student Account</h1>
+      <p class="signup-sub">Sign up to unlock your Smart Study Planner workspace</p>
+
+      <form id="signupForm">
+        <div class="form-group">
+          <label class="form-label" for="signupName">Student Name</label>
+          <input class="form-input" id="signupName" type="text" placeholder="e.g., Aarav Sharma" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupEmail">Email</label>
+          <input class="form-input" id="signupEmail" type="email" placeholder="student@university.edu" required />
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="signupBranch">Program / Branch</label>
+            <input class="form-input" id="signupBranch" type="text" value="B.Tech Student" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signupPassword">Password</label>
+            <input class="form-input" id="signupPassword" type="password" placeholder="••••••••" required />
+          </div>
+        </div>
+
+        <button class="btn-primary" type="submit">Sign Up &amp; Continue</button>
+      </form>
+
+      <p class="signup-footer-note">Your profile, tasks, reminders, and mock test progress save locally in this browser.</p>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN WORKSPACE (AFTER SIGN UP) ==================== -->
+  <div id="appShell" class="app-shell hidden">
+    <header class="top-header">
+      <div class="top-header-inner">
+        <div class="top-bar">
+          <div class="brand-left">
+            <button id="backBtn" class="back-btn hidden" type="button">← Dashboard</button>
+            <span id="headerTitle" class="screen-header-title">Smart Study Planner</span>
+          </div>
+
+          <div class="header-actions">
+            <button id="headerReminderBtn" class="icon-pill-btn" type="button" title="Study Reminders">🔔</button>
+            <button id="headerProfileBtn" class="icon-pill-btn" type="button" title="Profile & Plans">👤</button>
+          </div>
+        </div>
+
+        <div id="welcomeBanner" class="welcome-banner">
+          <h1 id="welcomeHeading">Welcome, Student!</h1>
+          <p id="welcomeSubtext">Stay on track with your lectures, tasks, reminders, and mock tests.</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="desktop-nav" aria-label="Study Planner Sections">
+      <div class="desktop-nav-inner">
+        <button class="nav-tab active" data-route="dashboard" type="button">Dashboard</button>
+        <button class="nav-tab" data-route="tasks" type="button">Tasks &amp; Deadlines</button>
+        <button class="nav-tab" data-route="priority" type="button">Task Priority</button>
+        <button class="nav-tab" data-route="progress" type="button">Progress Visualisation</button>
+        <button class="nav-tab" data-route="reminders" type="button">Study Reminders</button>
+        <button class="nav-tab" data-route="mocktests" type="button">Mock Tests</button>
+        <button class="nav-tab" data-route="profile" type="button">Profile &amp; Plans</button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <!-- -------- 2. MAIN DASHBOARD -------- -->
+      <section id="screen-dashboard" class="route-screen">
+        <div class="quick-actions-grid">
+          <button class="quick-tile" data-route="tasks" type="button">
+            <div class="quick-icon-circle">✓</div>
+            <span class="quick-label">Tasks</span>
+            <span id="dashTaskMeta" class="quick-meta">0 active tasks</span>
+          </button>
+
+          <button class="quick-tile" data-route="priority" type="button">
+            <div class="quick-icon-circle">⚑</div>
+            <span class="quick-label">Deadlines &amp; Priority</span>
+            <span id="dashHighMeta" class="quick-meta">0 high priority</span>
+          </button>
+
+          <button class="quick-tile" data-route="progress" type="button">
+            <div class="quick-icon-circle">◔</div>
+            <span class="quick-label">Progress</span>
+            <span id="dashProgressMeta" class="quick-meta">0% completed</span>
+          </button>
+
+          <button class="quick-tile" data-route="mocktests" type="button">
+            <div class="quick-icon-circle">✎</div>
+            <span class="quick-label">Mock Tests</span>
+            <span id="dashMockMeta" class="quick-meta">2 subjects ready</span>
+          </button>
+        </div>
+
+        <div class="dashboard-lower-grid">
+          <div class="card">
+            <div class="section-heading-row">
+              <h2 class="section-title">Upcoming Schedule</h2>
+              <button class="link-action" data-route="reminders" type="button">Reminders →</button>
+            </div>
+            <div class="schedule-list">
+              <div class="schedule-item">
+                <div class="schedule-time">10:30 AM</div>
+                <div class="schedule-info">
+                  <h4>AI &amp; ML Lecture</h4>
+                  <p>Supervised Learning &amp; Decision Trees · Hall B2</p>
+                </div>
+                <span class="badge-pill">Lecture</span>
+              </div>
+
+              <div class="schedule-item">
+                <div class="schedule-time">02:00 PM</div>
+                <div class="schedule-info">
+                  <h4>Applied Mathematics Lab</h4>
+                  <p>Linear Algebra &amp; Eigenvalues · Lab 04</p>
+                </div>
+                <span class="badge-pill">Lab</span>
+              </div>
+
+              <div class="schedule-item">
+                <div class="schedule-time">05:30 PM</div>
+                <div class="schedule-info">
+                  <h4>Evening Revision &amp; Mock</h4>
+                  <p>Practice problems &amp; deadline review</p>
+                </div>
+                <span class="badge-pill">Study Block</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-heading-row">
+              <h2 class="section-title">Quick Study Snapshot</h2>
+              <button class="link-action" data-route="profile" type="button">Profile →</button>
+            </div>
+            <div class="summary-stats-list">
+              <div class="mini-stat-box">
+                <div id="snapStudyHours" class="mini-stat-value">8h</div>
+                <div class="mini-stat-label">Weekly Study Logged</div>
+              </div>
+              <div class="mini-stat-box">
+                <div id="snapStreak" class="mini-stat-value">7-Day</div>
+                <div class="mini-stat-label">Current Streak</div>
+              </div>
+              <div class="mini-stat-box">
+                <div id="snapActiveReminders" class="mini-stat-value">3</div>
+                <div class="mini-stat-label">Active Reminders</div>
+              </div>
+              <div class="mini-stat-box">
+                <div id="snapLastScore" class="mini-stat-value">--</div>
+                <div class="mini-stat-label">Latest Mock Score</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- -------- 3. TASKS & DEADLINES -------- -->
+      <section id="screen-tasks" class="route-screen hidden">
+        <div class="card" style="margin-bottom: 18px;">
+          <div class="section-heading-row">
+            <h2 class="section-title">Add New Task or Deadline</h2>
+          </div>
+          <form id="addTaskForm" class="add-task-panel">
+            <input id="newTaskTitle" class="form-input" type="text" placeholder="Task title (e.g., Submit AI Assignment)" required />
+            <input id="newTaskDue" class="form-input" type="text" placeholder="Due date (e.g., Due Nov 28)" required />
+            <select id="newTaskPriority" class="form-select">
+              <option value="High">High Priority</option>
+              <option value="Medium" selected>Medium Priority</option>
+              <option value="Low">Low Priority</option>
+            </select>
+            <button class="btn-primary" type="submit" style="width: auto; padding: 10px 18px;">+ Add Task</button>
+          </form>
+
+          <div class="toolbar-row" style="margin-bottom: 0;">
+            <div class="filter-pills" id="taskFilterPills">
+              <button class="filter-pill active" data-filter="all" type="button">All Tasks</button>
+              <button class="filter-pill" data-filter="pending" type="button">Pending</button>
+              <button class="filter-pill" data-filter="completed" type="button">Completed</button>
+            </div>
+            <button id="openPriorityFromTasksBtn" class="btn-blue-soft" type="button">View Priority Board →</button>
+          </div>
+        </div>
+
+        <div id="tasksListContainer" class="task-list"></div>
+      </section>
+
+      <!-- -------- 4. TASK PRIORITY BOARD -------- -->
+      <section id="screen-priority" class="route-screen hidden">
+        <div class="priority-grid">
+          <div class="priority-col high-col">
+            <div class="priority-col-header">
+              <span class="priority-col-title">High Priority</span>
+              <span id="countHigh" class="prio-tag prio-High">0</span>
+            </div>
+            <div id="colHighItems"></div>
+          </div>
+
+          <div class="priority-col medium-col">
+            <div class="priority-col-header">
+              <span class="priority-col-title">Medium Priority</span>
+              <span id="countMedium" class="prio-tag prio-Medium">0</span>
+            </div>
+            <div id="colMediumItems"></div>
+          </div>
+
+          <div class="priority-col low-col">
+            <div class="priority-col-header">
+              <span class="priority-col-title">Low Priority</span>
+              <span id="countLow" class="prio-tag prio-Low">0</span>
+            </div>
+            <div id="colLowItems"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- -------- 5. PROGRESS VISUALISATION -------- -->
+      <section id="screen-progress" class="route-screen hidden">
+        <div class="progress-grid">
+          <div class="card">
+            <h2 class="section-title" style="margin-bottom: 12px;">Overall Task Progress</h2>
+            <div class="donut-wrap">
+              <div id="donutRing" class="donut-ring">
+                <div class="donut-hole">
+                  <span id="donutPct" class="donut-pct">0%</span>
+                  <span class="donut-sub">Completed</span>
+                </div>
+              </div>
+              <p id="donutSummaryText" style="font-size: 0.85rem; color: var(--muted);">0 of 0 tasks completed</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title" style="margin-bottom: 12px;">Subject-wise Completion</h2>
+            <div id="subjectBars" class="bar-chart"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-heading-row">
+            <h2 class="section-title">Daily Study Hours</h2>
+            <button id="logStudyHourBtn" class="btn-blue-soft" type="button">+ Log 1h Today</button>
+          </div>
+          <div id="dailyHoursChart" class="daily-hours-chart"></div>
+        </div>
+      </section>
+
+      <!-- -------- 6. STUDY REMINDERS & ALERTS -------- -->
+      <section id="screen-reminders" class="route-screen hidden">
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="section-heading-row" style="margin-bottom: 6px;">
+            <h2 class="section-title">Reminders &amp; Alerts</h2>
+            <span id="reminderActiveCount" class="badge-pill">0 Active</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--muted);">Configure alert lead times and toggle quiz, assignment, and study session reminders.</p>
+        </div>
+
+        <div id="remindersContainer" class="reminders-list"></div>
+      </section>
+      
+      <!-- -------- 7. MOCK TESTS -------- -->
+      <section id="screen-mocktests" class="route-screen hidden">
+        <div class="subject-selector-grid">
+          <button id="selectSubjectML" class="subject-card selected" data-subject="ml" type="button">
+            <h3>Machine Learning</h3>
+            <p>Supervised learning, classification, evaluation &amp; overfitting · 3 Questions</p>
+          </button>
+
+          <button id="selectSubjectMath" class="subject-card" data-subject="math" type="button">
+            <h3>Applied Mathematics</h3>
+            <p>Matrices, derivatives, orthogonality &amp; probability · 3 Questions</p>
+          </button>
+        </div>
+
+        <div class="quiz-box">
+          <div class="quiz-top-meta">
+            <div>
+              <span id="quizSubjectLabel" class="badge-pill">Machine Learning</span>
+              <span id="quizQuestionCounter" style="margin-left: 8px; font-size: 0.85rem; font-weight: 700; color: var(--muted);">Question 1 of 3</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span id="quizTimer" class="timer-pill">⏱ 15:00</span>
+              <button id="restartQuizBtn" class="btn-secondary" type="button">Restart</button>
+            </div>
+          </div>
+
+          <div id="quizQuestionText" class="question-text"></div>
+          <div id="quizOptionsList" class="options-list"></div>
+
+          <div class="quiz-footer-actions">
+            <div style="display: flex; gap: 8px;">
+              <button id="prevQuestionBtn" class="btn-secondary" type="button">← Previous</button>
+              <button id="nextQuestionBtn" class="btn-secondary" type="button">Next →</button>
+            </div>
+            <button id="submitQuizBtn" class="btn-primary" style="width: auto; padding: 10px 22px;" type="button">Submit Mock Test</button>
+          </div>
+
+          <div id="quizResultBox" class="score-banner hidden"></div>
+        </div>
+      </section>
+
+      <!-- -------- 8. PROFILE & PLANS -------- -->
+      <section id="screen-profile" class="route-screen hidden">
+        <div class="profile-grid">
+          <div class="card">
+            <div class="student-hero">
+              <div id="profileAvatar" class="avatar-circle">S</div>
+              <div>
+                <h2 id="profileName" style="font-size: 1.15rem; font-weight: 800;">Student</h2>
+                <p id="profileEmail" style="font-size: 0.84rem; color: var(--muted);">student@university.edu</p>
+                <span id="profileBranchBadge" class="badge-pill" style="margin-top: 6px; display: inline-block;">B.Tech Student</span>
+              </div>
+            </div>
+
+            <div class="stat-pair">
+              <div class="stat-box">
+                <strong id="profileStudyHours">8h</strong>
+                <span>Study Hours</span>
+              </div>
+              <div class="stat-box">
+                <strong id="profileStreak">7-Day</strong>
+                <span>Streak</span>
+              </div>
+            </div>
+
+            <button id="logoutBtn" class="btn-secondary" style="width: 100%; color: #B91C1C; border-color: #FECACA;" type="button">Log Out &amp; Return to Sign Up</button>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title" style="margin-bottom: 10px;">Study Plan &amp; Account Settings</h2>
+
+            <div class="settings-row-item">
+              <div>
+                <h4>Customize Study Plan</h4>
+                <p id="dailyTargetDesc">Daily study goal: 3 hours per day</p>
+              </div>
+              <select id="dailyGoalSelect" class="form-select" style="width: auto;">
+                <option value="2">2 hrs / day</option>
+                <option value="3" selected>3 hrs / day</option>
+                <option value="4">4 hrs / day</option>
+                <option value="6">6 hrs / day</option>
+              </select>
+            </div>
+
+            <div class="settings-row-item">
+              <div>
+                <h4>Subscription Plan</h4>
+                <p id="planStatusText">Student Pro Plan (Active · Mini Project)</p>
+              </div>
+              <button id="togglePlanBtn" class="btn-blue-soft" type="button">Switch Plan</button>
+            </div>
+
+            <div class="settings-row-item">
+              <div>
+                <h4>Account &amp; Workspace Data</h4>
+                <p>Reset sample tasks, reminders, and study hours to default</p>
+              </div>
+              <button id="resetDataBtn" class="btn-secondary" type="button">Reset Defaults</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = "smart_study_planner_state_v1";
+
+    const defaultState = {
+      signedUp: false,
+      currentRoute: "dashboard",
+      student: {
+        name: "Student",
+        email: "student@university.edu",
+        branch: "B.Tech Student",
+        studyHours: 8,
+        streakDays: 7,
+        dailyGoalHours: 3,
+        plan: "Student Pro"
+      },
+      tasks: [
+        {
+          id: "t1",
+          title: "Submit AI Assignment",
+          due: "Due Nov 28, 2026",
+          priority: "High",
+          subject: "AI & ML",
+          completed: false
+        },
+        {
+          id: "t2",
+          title: "Review Math Notes",
+          due: "Due Nov 29, 2026",
+          priority: "Medium",
+          subject: "Mathematics",
+          completed: true
+        },
+        {
+          id: "t3",
+          title: "Preparation for Quiz",
+          due: "Due Dec 01, 2026",
+          priority: "High",
+          subject: "AI & ML",
+          completed: false
+        },
+        {
+          id: "t4",
+          title: "Lab Report on Matrices",
+          due: "Due Dec 03, 2026",
+          priority: "Medium",
+          subject: "Mathematics",
+          completed: false
+        },
+        {
+          id: "t5",
+          title: "Read Chapter 1 Summary",
+          due: "Due Dec 05, 2026",
+          priority: "Low",
+          subject: "Core Theory",
+          completed: true
+        }
+      ],
+      reminders: [
+        {
+          id: "r1",
+          title: "Quiz Alerts",
+          description: "Notify before upcoming quizzes and tests",
+          leadTime: "15 mins Before",
+          enabled: true
+        },
+        {
+          id: "r2",
+          title: "Assignment Due",
+          description: "Alert ahead of assignment submission deadlines",
+          leadTime: "1 day Before",
+          enabled: true
+        },
+        {
+          id: "r3",
+          title: "Study Session",
+          description: "Prompt when a scheduled focus block begins",
+          leadTime: "10 mins Before",
+          enabled: true
+        }
+      ],
+      dailyHours: [1.5, 2.0, 1.0, 2.5, 1.0, 0.0, 0.0],
+      mockTest: {
+        subject: "ml",
+        questionIndex: 0,
+        answers: { ml: {}, math: {} },
+        lastScore: null
+      }
+    };
+
+    const mockQuestions = {
+      ml: [
+        {
+          q: "What is supervised learning primarily trained on?",
+          options: [
+            "Labeled input-output pairs",
+            "Unlabeled data clusters only",
+            "Trial-and-error environment rewards only",
+            "Raw hardware interrupts"
+          ],
+          correct: 0
+        },
+        {
+          q: "Which technique helps reduce overfitting in a machine learning model?",
+          options: [
+            "Increasing model complexity without bounds",
+            "Regularization and cross-validation",
+            "Training only on noisy outliers",
+            "Removing validation data completely"
+          ],
+          correct: 1
+        },
+        {
+          q: "Which metric is best suited for evaluating regression predictions?",
+          options: [
+            "Mean Squared Error (MSE)",
+            "Confusion Matrix alone",
+            "F1 Score exclusively",
+            "ROC Curve threshold"
+          ],
+          correct: 0
+        }
+      ],
+      math: [
+        {
+          q: "If A is an n × n invertible matrix, what is A⁻¹ · A equal to?",
+          options: [
+            "The zero matrix",
+            "The identity matrix I",
+            "A transpose Aᵀ",
+            "A scalar determinant"
+          ],
+          correct: 1
+        },
+        {
+          q: "What is the derivative of f(x) = 3x² + 5x with respect to x?",
+          options: [
+            "6x + 5",
+            "3x + 5",
+            "6x² + 5",
+            "x³ + 5x"
+          ],
+          correct: 0
+        },
+        {
+          q: "For two independent events A and B, P(A ∩ B) equals:",
+          options: [
+            "P(A) + P(B)",
+            "P(A) − P(B)",
+            "P(A) · P(B)",
+            "P(A) / P(B)"
+          ],
+          correct: 2
+        }
+      ]
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(defaultState),
+          ...parsed,
+          student: { ...defaultState.student, ...(parsed.student || {}) },
+          mockTest: {
+            ...defaultState.mockTest,
+            ...(parsed.mockTest || {}),
+            answers: {
+              ml: { ...((parsed.mockTest && parsed.mockTest.answers && parsed.mockTest.answers.ml) || {}) },
+              math: { ...((parsed.mockTest && parsed.mockTest.answers && parsed.mockTest.answers.math) || {}) }
+            }
+          }
+        };
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    let state = loadState();
+    let timerSeconds = 15 * 60;
+    let timerInterval = null;
+    let toastTimeout = null;
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => el.classList.remove("show"), 2400);
+    }
+
+    const signupScreen = document.getElementById("signupScreen");
+    const appShell = document.getElementById("appShell");
+
+    function syncEntryScreen() {
+      if (!state.signedUp) {
+        signupScreen.classList.remove("hidden");
+        appShell.classList.add("hidden");
+      } else {
+        signupScreen.classList.add("hidden");
+        appShell.classList.remove("hidden");
+        navigateTo(state.currentRoute || "dashboard", false);
+        renderAll();
+      }
+    }
+
+    document.getElementById("signupForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nameVal = document.getElementById("signupName").value.trim() || "Student";
+      const emailVal = document.getElementById("signupEmail").value.trim() || "student@university.edu";
+      const branchVal = document.getElementById("signupBranch").value.trim() || "B.Tech Student";
+
+      state.student.name = nameVal;
+      state.student.email = emailVal;
+      state.student.branch = branchVal;
+      state.signedUp = true;
+      state.currentRoute = "dashboard";
+      saveState();
+      syncEntryScreen();
+      showToast(`Welcome, ${nameVal}!`);
+    });
+
+    const routeTitles = {
+      dashboard: "Smart Study Planner",
+      tasks: "Tasks & Deadlines",
+      priority: "Task Priority",
+      progress: "Progress Visualisation",
+      reminders: "Reminders & Alerts",
+      mocktests: "Mock Tests",
+      profile: "Profile & Plans"
+    };
+
+    function navigateTo(route, persist = true) {
+      if (!routeTitles[route]) route = "dashboard";
+      state.currentRoute = route;
+      if (persist) saveState();
+
+      document.querySelectorAll(".route-screen").forEach((sec) => {
+        sec.classList.toggle("hidden", sec.id !== `screen-${route}`);
+      });
+
+      document.querySelectorAll(".nav-tab").forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.route === route);
+      });
+
+      document.getElementById("headerTitle").textContent = routeTitles[route];
+      const backBtn = document.getElementById("backBtn");
+      const welcomeBanner = document.getElementById("welcomeBanner");
+
+      if (route === "dashboard") {
+        backBtn.classList.add("hidden");
+        welcomeBanner.classList.remove("hidden");
+      } else {
+        backBtn.classList.remove("hidden");
+        welcomeBanner.classList.add("hidden");
+      }
+
+      if (route === "mocktests") {
+        startQuizTimer();
+      } else {
+        stopQuizTimer();
+      }
+    }
+
+    document.querySelectorAll("[data-route]").forEach((el) => {
+      el.addEventListener("click", () => {
+        navigateTo(el.dataset.route);
+        renderAll();
+      });
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      navigateTo("dashboard");
+      renderAll();
+    });
+
+    document.getElementById("headerReminderBtn").addEventListener("click", () => {
+      navigateTo("reminders");
+      renderReminders();
+    });
+
+    document.getElementById("headerProfileBtn").addEventListener("click", () => {
+      navigateTo("profile");
+      renderProfile();
+    });
+
+    document.getElementById("openPriorityFromTasksBtn").addEventListener("click", () => {
+      navigateTo("priority");
+      renderPriorityBoard();
+    });
+
+    let currentTaskFilter = "all";
+
+    document.querySelectorAll("#taskFilterPills .filter-pill").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentTaskFilter = btn.dataset.filter;
+        document.querySelectorAll("#taskFilterPills .filter-pill").forEach((b) => {
+          b.classList.toggle("active", b === btn);
+        });
+        renderTasks();
+      });
+    });
+
+    document.getElementById("addTaskForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const titleInput = document.getElementById("newTaskTitle");
+      const dueInput = document.getElementById("newTaskDue");
+      const prioSelect = document.getElementById("newTaskPriority");
+
+      const title = titleInput.value.trim();
+      const due = dueInput.value.trim() || "Upcoming Deadline";
+      const priority = prioSelect.value;
+      if (!title) return;
+
+      state.tasks.unshift({
+        id: "t_" + Date.now(),
+        title,
+        due,
+        priority,
+        subject: priority === "High" ? "AI & ML" : priority === "Medium" ? "Mathematics" : "Core Theory",
+        completed: false
+      });
+
+      titleInput.value = "";
+      dueInput.value = "";
+      saveState();
+      renderAll();
+      showToast("Task added");
+    });
+
+    function toggleTaskComplete(id) {
+      const task = state.tasks.find((t) => t.id === id);
+      if (!task) return;
+      task.completed = !task.completed;
+      saveState();
+      renderAll();
+    }
+
+    function deleteTask(id) {
+      state.tasks = state.tasks.filter((t) => t.id !== id);
+      saveState();
+      renderAll();
+      showToast("Task removed");
+    }
+
+    function changeTaskPriority(id, newPriority) {
+      const task = state.tasks.find((t) => t.id === id);
+      if (!task) return;
+      task.priority = newPriority;
+      saveState();
+      renderAll();
+      showToast(`Moved to ${newPriority} Priority`);
+    }
+
+    function renderTasks() {
+      const container = document.getElementById("tasksListContainer");
+      const filtered = state.tasks.filter((t) => {
+        if (currentTaskFilter === "pending") return !t.completed;
+        if (currentTaskFilter === "completed") return t.completed;
+        return true;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--muted);">No tasks in this view.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered
+        .map(
+          (t) => `
+          <div class="task-card">
+            <div class="task-left">
+              <input class="task-checkbox" type="checkbox" ${t.completed ? "checked" : ""} onchange="toggleTaskComplete('${t.id}')" aria-label="Mark ${t.title} complete" />
+              <div>
+                <div class="task-title ${t.completed ? "completed" : ""}">${escapeHtml(t.title)}</div>
+                <div class="task-meta">${escapeHtml(t.due)} · ${escapeHtml(t.subject)}</div>
+              </div>
+            </div>
+            <div class="task-right">
+              <span class="status-tag ${t.completed ? "done" : ""}">${t.completed ? "Completed" : "Task Status"}</span>
+              <span class="prio-tag prio-${t.priority}">${t.priority}</span>
+              <button class="icon-action-btn" type="button" onclick="deleteTask('${t.id}')">Delete</button>
+            </div>
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    function renderPriorityBoard() {
+      const groups = { High: [], Medium: [], Low: [] };
+      state.tasks.forEach((t) => {
+        if (groups[t.priority]) groups[t.priority].push(t);
+      });
+
+      document.getElementById("countHigh").textContent = groups.High.length;
+      document.getElementById("countMedium").textContent = groups.Medium.length;
+      document.getElementById("countLow").textContent = groups.Low.length;
+
+      const renderCol = (elId, items, currentPrio) => {
+        const el = document.getElementById(elId);
+        if (!items.length) {
+          el.innerHTML = `<p style="font-size:0.82rem; color:var(--muted);">No ${currentPrio.toLowerCase()} priority tasks.</p>`;
+          return;
+        }
+        const targets = ["High", "Medium", "Low"].filter((p) => p !== currentPrio);
+        el.innerHTML = items
+          .map(
+            (item) => `
+            <div class="priority-item-card">
+              <h4>${escapeHtml(item.title)}</h4>
+              <p>${escapeHtml(item.due)}</p>
+              <div class="priority-move-row">
+                ${targets
+                  .map(
+                    (target) =>
+                      `<button class="move-btn" type="button" onclick="changeTaskPriority('${item.id}', '${target}')">→ ${target}</button>`
+                  )
+                  .join("")}
+              </div>
+            </div>
+          `
+          )
+          .join("");
+      };
+
+      renderCol("colHighItems", groups.High, "High");
+      renderCol("colMediumItems", groups.Medium, "Medium");
+      renderCol("colLowItems", groups.Low, "Low");
+    }
+
+    function renderProgress() {
+      const total = state.tasks.length;
+      const done = state.tasks.filter((t) => t.completed).length;
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+      document.getElementById("donutPct").textContent = `${pct}%`;
+      document.getElementById("donutSummaryText").textContent = `${done} of ${total} tasks completed`;
+      document.getElementById("donutRing").style.background = `conic-gradient(var(--blue) ${pct * 3.6}deg, #E2E8F0 0deg)`;
+
+      const subjects = ["AI & ML", "Mathematics", "Core Theory"];
+      const barsHtml = subjects
+        .map((subj) => {
+          const sTasks = state.tasks.filter((t) => t.subject === subj);
+          const sDone = sTasks.filter((t) => t.completed).length;
+          const sPct = sTasks.length === 0 ? 50 : Math.round((sDone / sTasks.length) * 100);
+          return `
+            <div class="bar-row">
+              <div class="bar-label-line">
+                <span>${subj}</span>
+                <span>${sPct}%</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:${sPct}%"></div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+      document.getElementById("subjectBars").innerHTML = barsHtml;
+
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      const maxHrs = Math.max(3, ...state.dailyHours);
+      document.getElementById("dailyHoursChart").innerHTML = days
+        .map((d, i) => {
+          const hrs = state.dailyHours[i] || 0;
+          const heightPct = Math.min(100, Math.round((hrs / maxHrs) * 100));
+          return `
+            <div class="day-col">
+              <span class="day-val">${hrs}h</span>
+              <div class="day-bar-wrap">
+                <div class="day-bar" style="height:${heightPct}%"></div>
+              </div>
+              <span class="day-name">${d}</span>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    document.getElementById("logStudyHourBtn").addEventListener("click", () => {
+      const todayIdx = (new Date().getDay() + 6) % 7;
+      state.dailyHours[todayIdx] = Number(((state.dailyHours[todayIdx] || 0) + 1).toFixed(1));
+      state.student.studyHours = Number((state.student.studyHours + 1).toFixed(1));
+      saveState();
+      renderAll();
+      showToast("Logged +1 study hour");
+    });
+
+    function toggleReminder(id) {
+      const rem = state.reminders.find((r) => r.id === id);
+      if (!rem) return;
+      rem.enabled = !rem.enabled;
+      saveState();
+      renderReminders();
+      renderDashboard();
+      showToast(`${rem.title} ${rem.enabled ? "enabled" : "muted"}`);
+    }
+
+    function changeReminderLead(id, newLead) {
+      const rem = state.reminders.find((r) => r.id === id);
+      if (!rem) return;
+      rem.leadTime = newLead;
+      saveState();
+      showToast(`${rem.title}: ${newLead}`);
+    }
+
+    function renderReminders() {
+      const activeCount = state.reminders.filter((r) => r.enabled).length;
+      document.getElementById("reminderActiveCount").textContent = `${activeCount} Active`;
+
+      const leadOptions = ["10 mins Before", "15 mins Before", "30 mins Before", "1 day Before"];
+      document.getElementById("remindersContainer").innerHTML = state.reminders
+        .map(
+          (r) => `
+          <div class="reminder-card">
+            <div class="reminder-info">
+              <h4>${escapeHtml(r.title)}</h4>
+              <p>${escapeHtml(r.description)}</p>
+            </div>
+            <div class="reminder-controls">
+              <select class="form-select" style="width:auto;" onchange="changeReminderLead('${r.id}', this.value)">
+                ${leadOptions
+                  .map((opt) => `<option value="${opt}" ${r.leadTime === opt ? "selected" : ""}>${opt}</option>`)
+                  .join("")}
+              </select>
+              <label class="switch">
+                <input type="checkbox" ${r.enabled ? "checked" : ""} onchange="toggleReminder('${r.id}')" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    function formatTimer(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `⏱ ${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function startQuizTimer() {
+      stopQuizTimer();
+      document.getElementById("quizTimer").textContent = formatTimer(timerSeconds);
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds -= 1;
+          document.getElementById("quizTimer").textContent = formatTimer(timerSeconds);
+        }
+      }, 1000);
+    }
+
+    function stopQuizTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    document.querySelectorAll(".subject-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        state.mockTest.subject = card.dataset.subject;
+        state.mockTest.questionIndex = 0;
+        document.getElementById("quizResultBox").classList.add("hidden");
+        saveState();
+        renderMockTest();
+      });
+    });
+
+    function renderMockTest() {
+      const subj = state.mockTest.subject;
+      const list = mockQuestions[subj];
+      const idx = state.mockTest.questionIndex;
+      const qObj = list[idx];
+      const savedAns = state.mockTest.answers[subj][idx];
+
+      document.getElementById("selectSubjectML").classList.toggle("selected", subj === "ml");
+      document.getElementById("selectSubjectMath").classList.toggle("selected", subj === "math");
+      document.getElementById("quizSubjectLabel").textContent =
+        subj === "ml" ? "Machine Learning" : "Applied Mathematics";
+      document.getElementById("quizQuestionCounter").textContent = `Question ${idx + 1} of ${list.length}`;
+      document.getElementById("quizQuestionText").textContent = qObj.q;
+
+      document.getElementById("quizOptionsList").innerHTML = qObj.options
+        .map(
+          (opt, oIdx) => `
+          <label class="option-item">
+            <input type="radio" name="mockOpt" value="${oIdx}" ${savedAns === oIdx ? "checked" : ""} onchange="selectMockAnswer(${oIdx})" />
+            <span>${escapeHtml(opt)}</span>
+          </label>
+        `
+        )
+        .join("");
+    }
+
+    function selectMockAnswer(optIdx) {
+      const subj = state.mockTest.subject;
+      const idx = state.mockTest.questionIndex;
+      state.mockTest.answers[subj][idx] = optIdx;
+      saveState();
+    }
+
+    document.getElementById("prevQuestionBtn").addEventListener("click", () => {
+      const len = mockQuestions[state.mockTest.subject].length;
+      state.mockTest.questionIndex = (state.mockTest.questionIndex - 1 + len) % len;
+      saveState();
+      renderMockTest();
+    });
+
+    document.getElementById("nextQuestionBtn").addEventListener("click", () => {
+      const len = mockQuestions[state.mockTest.subject].length;
+      state.mockTest.questionIndex = (state.mockTest.questionIndex + 1) % len;
+      saveState();
+      renderMockTest();
+    });
+
+    document.getElementById("restartQuizBtn").addEventListener("click", () => {
+      const subj = state.mockTest.subject;
+      state.mockTest.answers[subj] = {};
+      state.mockTest.questionIndex = 0;
+      timerSeconds = 15 * 60;
+      document.getElementById("quizResultBox").classList.add("hidden");
+      saveState();
+      renderMockTest();
+      startQuizTimer();
+      showToast("Mock test reset");
+    });
+
+    document.getElementById("submitQuizBtn").addEventListener("click", () => {
+      const subj = state.mockTest.subject;
+      const list = mockQuestions[subj];
+      let score = 0;
+      list.forEach((q, idx) => {
+        if (state.mockTest.answers[subj][idx] === q.correct) score += 1;
+      });
+
+      const pct = Math.round((score / list.length) * 100);
+      const label = `${score}/${list.length} (${pct}%)`;
+      state.mockTest.lastScore = label;
+      saveState();
+
+      const resBox = document.getElementById("quizResultBox");
+      resBox.classList.remove("hidden");
+      resBox.innerHTML = `<strong>Mock Test Submitted:</strong> You scored <strong>${label}</strong> in ${
+        subj === "ml" ? "Machine Learning" : "Applied Mathematics"
+      }.`;
+      renderDashboard();
+      showToast(`Score recorded: ${label}`);
+    });
+
+    function renderProfile() {
+      const s = state.student;
+      document.getElementById("welcomeHeading").textContent = `Welcome, ${s.name}!`;
+      document.getElementById("profileAvatar").textContent = (s.name || "S").charAt(0).toUpperCase();
+      document.getElementById("profileName").textContent = s.name;
+      document.getElementById("profileEmail").textContent = s.email;
+      document.getElementById("profileBranchBadge").textContent = s.branch;
+      document.getElementById("profileStudyHours").textContent = `${s.studyHours}h`;
+      document.getElementById("profileStreak").textContent = `${s.streakDays}-Day`;
+      document.getElementById("dailyGoalSelect").value = String(s.dailyGoalHours);
+      document.getElementById("dailyTargetDesc").textContent = `Daily study goal: ${s.dailyGoalHours} hours per day`;
+      document.getElementById("planStatusText").textContent = `${s.plan} Plan (Active · Mini Project)`;
+    }
+
+    document.getElementById("dailyGoalSelect").addEventListener("change", (e) => {
+      state.student.dailyGoalHours = Number(e.target.value);
+      saveState();
+      renderProfile();
+      showToast("Study plan updated");
+    });
+
+    document.getElementById("togglePlanBtn").addEventListener("click", () => {
+      state.student.plan = state.student.plan === "Student Pro" ? "Campus Standard" : "Student Pro";
+      saveState();
+      renderProfile();
+      showToast(`Switched to ${state.student.plan}`);
+    });
+
+    document.getElementById("resetDataBtn").addEventListener("click", () => {
+      const keepName = state.student.name;
+      const keepEmail = state.student.email;
+      const keepBranch = state.student.branch;
+      state = structuredClone(defaultState);
+      state.signedUp = true;
+      state.currentRoute = "profile";
+      state.student.name = keepName;
+      state.student.email = keepEmail;
+      state.student.branch = keepBranch;
+      saveState();
+      renderAll();
+      showToast("Workspace reset to default values");
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      state.signedUp = false;
+      state.currentRoute = "dashboard";
+      saveState();
+      syncEntryScreen();
+    });
+
+    function renderDashboard() {
+      const total = state.tasks.length;
+      const active = state.tasks.filter((t) => !t.completed).length;
+      const done = total - active;
+      const highCount = state.tasks.filter((t) => t.priority === "High" && !t.completed).length;
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+      const activeReminders = state.reminders.filter((r) => r.enabled).length;
+
+      document.getElementById("welcomeHeading").textContent = `Welcome, ${state.student.name}!`;
+      document.getElementById("dashTaskMeta").textContent = `${active} active tasks`;
+      document.getElementById("dashHighMeta").textContent = `${highCount} high priority`;
+      document.getElementById("dashProgressMeta").textContent = `${pct}% completed`;
+      document.getElementById("snapStudyHours").textContent = `${state.student.studyHours}h`;
+      document.getElementById("snapStreak").textContent = `${state.student.streakDays}-Day`;
+      document.getElementById("snapActiveReminders").textContent = String(activeReminders);
+      document.getElementById("snapLastScore").textContent = state.mockTest.lastScore || "--";
+    }
+
+    function renderAll() {
+      renderDashboard();
+      renderTasks();
+      renderPriorityBoard();
+      renderProgress();
+      renderReminders();
+      renderMockTest();
+      renderProfile();
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    syncEntryScreen();
+  </script>
+</body>
+</html>
